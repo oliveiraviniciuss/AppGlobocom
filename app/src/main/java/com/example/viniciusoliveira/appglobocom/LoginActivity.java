@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         db = new DBHelper(this);
         session = new Session(this);
         login = (Button)findViewById(R.id.btnLogin);
@@ -40,6 +41,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+    //Método que toma uma determinada ação caso um dos botões seja acionado.
+    //Intent é usado pra solicitar essa ação
     @Override
     public void onClick(View v) {
         switch(v.getId()){
@@ -55,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
     }
+    //Pega as informações digitas nos campos de Email e Senha e confere eles existem no banco. Caso exista, é autorizado a entrada no sistema.
     private void login(){
         String email = etEmail.getText().toString();
         String pass = etPass.getText().toString();
@@ -64,7 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(LoginActivity.this,MainActivity.class));
             finish();
         }
-        else{
+        else{ //Caso não exista, um popup aparece para o usuário.
             Toast.makeText(getApplicationContext(),"Email ou Senha incorretos",Toast.LENGTH_SHORT).show();
         }
     }
