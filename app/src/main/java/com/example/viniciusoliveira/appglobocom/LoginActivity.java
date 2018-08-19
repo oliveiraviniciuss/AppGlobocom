@@ -64,8 +64,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String pass = etPass.getText().toString();
 
         if(db.getUser(email,pass)){
+            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+            intent.putExtra("email",email);
             session.setLoggedin(true);
-            startActivity(new Intent(LoginActivity.this,MainActivity.class));
+            startActivity(intent);
             finish();
         }
         else{ //Caso não exista, um popup aparece para o usuário.

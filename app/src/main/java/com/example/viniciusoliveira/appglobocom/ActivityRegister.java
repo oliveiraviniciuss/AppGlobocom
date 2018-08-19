@@ -15,7 +15,7 @@ public class ActivityRegister extends AppCompatActivity implements View.OnClickL
     private TextView tvLogin;
     private EditText etEmail,etPass,etName;
     private DBHelper db;
-
+    TextView teste;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +30,8 @@ public class ActivityRegister extends AppCompatActivity implements View.OnClickL
         etName = (EditText)findViewById(R.id.etName);
         reg.setOnClickListener(this);
         tvLogin.setOnClickListener(this);
+
+
 
     }
 
@@ -63,6 +65,9 @@ public class ActivityRegister extends AppCompatActivity implements View.OnClickL
         else{
             db.addUser(email,pass,name);
             displayPrint("Usuario cadastrado");
+
+
+
             finish();
         }
     }

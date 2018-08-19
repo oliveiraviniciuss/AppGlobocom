@@ -7,7 +7,7 @@ import android.content.SharedPreferences;
 
 public class Session {
     SharedPreferences prefs;
-    SharedPreferences.Editor editor;
+        SharedPreferences.Editor editor;
     Context context;
 
     public Session(Context context){
