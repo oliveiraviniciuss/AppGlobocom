@@ -1,10 +1,14 @@
 package com.example.viniciusoliveira.appglobocom;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,51 +27,75 @@ import java.util.ArrayList;
 
 
 public class ActivityFilms extends AppCompatActivity implements View.OnClickListener{
-    private TextView mTextResult;
-    private RequestQueue mQueue;
 
+    private RequestQueue mQueue;
+    private ListView listView;
     private Button btnVoltar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_films);
 
-        mTextResult = findViewById(R.id.text_view_result);
-        mTextResult.setOnClickListener(this);
         btnVoltar = (Button)findViewById(R.id.btnVoltar);
         btnVoltar.setOnClickListener(this);
-
+        listView =  (ListView)findViewById(R.id.listview);
         mQueue = Volley.newRequestQueue(this);
+
         jsonParse();
 
+    }
+
+    private void printJson(String[] onlyNames, final String[] dados){
 
 
 
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,onlyNames);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ActivityFilms.this,ActivityFilmsDetails.class);
+                //Passo os atributos pra outra classe.
+                intent.putExtra("id",position);
+                intent.putExtra("vector",dados);
+                startActivity(intent);
+
+            }
+        });
     }
     private void jsonParse(){
-        String url = "https://api.myjson.com/bins/btv4c";
+
+        //Url onde está meu JSON.
+        String url = "https://api.myjson.com/bins/14veuw";
+
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     JSONArray jsonArray = response.getJSONArray("Filmes");
 
+                    //Criando String do tamanho do jsonArray para guardar as informacoes do json como String
+
+                    //Criei 2 vetores. Em um eu vou guardar somente os nomes dos filmes e no outro a estrutura completa do json
+                    String[] dados = new String[jsonArray.length()];
+                    String[] onlyNames = new String[jsonArray.length()];
+
                     for(int i = 0; i < jsonArray.length();i++){
                         JSONObject Filmes = jsonArray.getJSONObject(i);
 
-                        String tittle = Filmes.getString("tittle");
-                        String subtittle = Filmes.getString("subtittle");
+                        String title = Filmes.getString("title");
+                        String subtitle = Filmes.getString("subtitle");
                         String duracao = Filmes.getString("duracao");
                         String sinopse = Filmes.getString("sinopse");
-                        String image = Filmes.getString("image");
-
-                        mTextResult.append(tittle + ", " + subtittle +", " + duracao + ", " + sinopse + ", " + image +"\n\n");
 
 
-
-
+                        onlyNames[i] = (title + "\n");
+                        dados[i] = ("Titulo: " + title+"\n\n" + "Legendas: " + subtitle+"\n\n" + "Duracao: " + duracao+"\n\n" + "Sinopse: " + sinopse+"\n\n");
 
                     }
+                    //Método que printa os dados do Json na tela.
+                    printJson(onlyNames,dados);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -79,16 +107,16 @@ public class ActivityFilms extends AppCompatActivity implements View.OnClickList
             }
         });
         mQueue.add(request);
+
     }
 
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.text_view_result:
-                Toast.makeText(getApplicationContext(),"Teste",Toast.LENGTH_SHORT).show();
-                break;
             case R.id.btnVoltar:
                 startActivity(new Intent(ActivityFilms.this,MainActivity.class));
         }
     }
+
+
 }
