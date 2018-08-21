@@ -15,9 +15,11 @@ import android.widget.Toast;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button login,register;
-    private EditText etEmail,etPass;
+    private static EditText etEmail,etPass;
     private DBHelper db;
     private Session session;
+    public static String email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,5 +75,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         else{ //Caso não exista, um popup aparece para o usuário.
             Toast.makeText(getApplicationContext(),"Email ou Senha incorretos",Toast.LENGTH_SHORT).show();
         }
+    }
+
+
+    public static String getEmail(){
+        email = etEmail.getText().toString();
+    return email;
     }
 }

@@ -27,7 +27,8 @@ import java.util.ArrayList;
 
 
 public class ActivityFilms extends AppCompatActivity implements View.OnClickListener{
-
+    public static String[] dados;
+    private String[] onlyNames;
     private RequestQueue mQueue;
     private ListView listView;
     private Button btnVoltar;
@@ -45,9 +46,7 @@ public class ActivityFilms extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private void printJson(String[] onlyNames, final String[] dados){
-
-
+    private void printJson(final String[] onlyNames, final String[] dados){
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,onlyNames);
         listView.setAdapter(adapter);
@@ -57,8 +56,10 @@ public class ActivityFilms extends AppCompatActivity implements View.OnClickList
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ActivityFilms.this,ActivityFilmsDetails.class);
                 //Passo os atributos pra outra classe.
+
                 intent.putExtra("id",position);
                 intent.putExtra("vector",dados);
+                intent.putExtra("names",onlyNames);
                 startActivity(intent);
 
             }
@@ -67,7 +68,7 @@ public class ActivityFilms extends AppCompatActivity implements View.OnClickList
     private void jsonParse(){
 
         //Url onde está meu JSON.
-        String url = "https://api.myjson.com/bins/14veuw";
+        String url = "https://api.myjson.com/bins/19hkc8";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -78,8 +79,8 @@ public class ActivityFilms extends AppCompatActivity implements View.OnClickList
                     //Criando String do tamanho do jsonArray para guardar as informacoes do json como String
 
                     //Criei 2 vetores. Em um eu vou guardar somente os nomes dos filmes e no outro a estrutura completa do json
-                    String[] dados = new String[jsonArray.length()];
-                    String[] onlyNames = new String[jsonArray.length()];
+                    dados = new String[jsonArray.length()];
+                    onlyNames = new String[jsonArray.length()];
 
                     for(int i = 0; i < jsonArray.length();i++){
                         JSONObject Filmes = jsonArray.getJSONObject(i);

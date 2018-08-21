@@ -12,8 +12,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnLogout;
     private Button btnCatalogo;
     private TextView tvMensagem;
-
-
+    private Button btnFavoritos;
+    private String email;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,19 +28,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Forma de receber o atributo de outra classe.
         //Mudar para o nome cadastrado.
         Bundle bundle = getIntent().getExtras();
-        if(bundle != null){
-
-
-            String email = bundle.getString("email");
-            tvMensagem = (TextView)findViewById(R.id.tvMensagem);
-            tvMensagem.setText("    Olá "+ email + " seja bem vindo(a) ao sistema de catalogo de filmes online.\n    Escolha" +
+        if(bundle != null) {
+            email = bundle.getString("email");
+            tvMensagem = (TextView) findViewById(R.id.tvMensagem);
+            tvMensagem.setText("    Olá " + email + " seja bem vindo(a) ao sistema de catalogo de filmes online.\n    Escolha" +
                     " uma das opções para navegar:");
         }
+
+
 
         btnLogout = (Button)findViewById(R.id.btnLogout);
         btnCatalogo = (Button)findViewById(R.id.btnCatalogo);
         btnCatalogo.setOnClickListener(this);
         btnLogout.setOnClickListener(this);
+        btnFavoritos = (Button)findViewById(R.id.btnFavoritos);
+        btnFavoritos.setOnClickListener(this);
+
 
 
 
@@ -48,12 +51,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v){
+
         switch(v.getId()){
             case R.id.btnLogout:
                 logout();
                 break;
             case R.id.btnCatalogo:
                 startActivity(new Intent(MainActivity.this,ActivityFilms.class));
+                break;
+            case R.id.btnFavoritos:
+                Intent intent = new Intent(MainActivity.this,ActivityFavorities.class);
+                startActivity(intent);
                 break;
             default:
         }
